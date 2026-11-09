@@ -1,0 +1,84 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MegaMarketLink.Views.Pages.CatalogView"
+             xmlns:vm="using:MegaMarketLink.ViewModels.Pages"
+             x:DataType="vm:CatalogVM">
+    <Grid RowDefinitions="Auto,Auto,*"
+          Margin="25">
+        
+        <TextBlock Grid.Row="0"
+                   Text="Каталог товаров"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Margin="0 0 0 20"/>
+        
+        <TextBox Grid.Row="1"
+                 Watermark="Поиск..."
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0 0 0 20"
+                 HorizontalAlignment="Stretch"/>
+        
+        <ScrollViewer Grid.Row="2"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl ItemsSource="{Binding Products}">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Border Width="200"
+                                Margin="0 0 15 15"
+                                Padding="15"
+                                Background="#F1F2F6"
+                                CornerRadius="10">
+
+                            <StackPanel Spacing="8">
+
+                                <Border Height="120"
+                                        Background="#DDE1E7"
+                                        CornerRadius="6">
+                                    <TextBlock Text="Нет изображения"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Foreground="#666"/>
+                                </Border>
+
+                                <TextBlock Text="{Binding Name}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Text="{Binding Description}"
+                                           Foreground="#666"
+                                           TextWrapping="Wrap"
+                                           MaxHeight="45"/>
+
+                                <TextBlock Text="{Binding Price, StringFormat='{}{0:N2} ₽'}"
+                                           FontSize="18"
+                                           FontWeight="Bold"/>
+
+                                <TextBlock Text="{Binding Quantity, StringFormat='В наличии: {0}'}"
+                                           Foreground="#666"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

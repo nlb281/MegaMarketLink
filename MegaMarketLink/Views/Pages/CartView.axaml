@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MegaMarketLink.Views.Pages.CartView">
+    <StackPanel Margin="25" Spacing="15">
+        <TextBlock Text="Корзина"
+                   FontSize="28"
+                   FontWeight="Bold"/>
+
+        <TextBlock Text="Здесь будут отображаться товары корзины."
+                   FontSize="16"/>
+    </StackPanel>
+</UserControl>
