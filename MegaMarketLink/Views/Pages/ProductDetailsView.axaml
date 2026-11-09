@@ -48,6 +48,14 @@
 
                     <TextBlock Text="{Binding Product.Quantity,
                                                StringFormat='В наличии: {0} шт.'}"/>
+                    
+                    <Button Content="Добавить в корзину"
+                            Command="{Binding AddProductCommand}"
+                            HorizontalAlignment="Stretch"
+                            Height="45"
+                            Background="#2563EB"
+                            Foreground="White"
+                            FontSize="16"/>
 
                 </StackPanel>
 
