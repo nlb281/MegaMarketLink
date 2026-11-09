@@ -17,15 +17,15 @@ public partial class User
 
     public string? LastName { get; set; }
 
-    public string CompanyName { get; set; } = null!;
+    public string? CompanyName { get; set; }
 
-    public string Inn { get; set; } = null!;
+    public string? Inn { get; set; }
 
     public int RoleId { get; set; }
 
     public bool IsBanned { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 
     public virtual Cart? Cart { get; set; }
 

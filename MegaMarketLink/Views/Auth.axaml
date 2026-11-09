@@ -1,0 +1,146 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MegaMarketLink.ViewModels"
+        x:DataType="vm:AuthVM"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="768"
+        x:Class="MegaMarketLink.Views.Auth"
+        Title="Auth"
+        Width="1024"
+        Height="768">
+    <Window.DataContext>
+        <vm:AuthVM/>
+    </Window.DataContext>
+    <Grid RowDefinitions="150, *">
+        <TextBlock Grid.Row="0" Text="MegaMarketLink"
+                   FontSize="64"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="25"/>
+        
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding IsAuthSelectionVisible}">
+
+                    <Button Content="Войти"
+                            Command="{Binding ShowLoginCommand}"
+                            Width="250"
+                            FontSize="24" 
+                            Margin="0 0 0 12"/>
+
+                    <Button Content="Регистрация" 
+                            Command="{Binding ShowRegisterCommand}"
+                            Width="250" 
+                            FontSize="24"/>
+
+                </StackPanel>
+
+                <!-- Login -->
+                <StackPanel IsVisible="{Binding IsLoginMode}" 
+                            VerticalAlignment="Center" Spacing="10">
+
+                    <TextBlock Text="Вход в аккаунт" 
+                               HorizontalAlignment="Center" 
+                               FontSize="28" 
+                               FontWeight="Bold"/>
+
+                    <TextBox Watermark="Email"
+                             Text="{Binding LoginEmail}"/>
+
+                    <TextBox Watermark="Пароль"
+                             PasswordChar="*"
+                             Text="{Binding LoginPassword}"/>
+
+                    <Button Content="Войти"
+                            Command="{Binding LoginCommand}"
+                            CommandParameter="{Binding $parent[Window]}"
+                            HorizontalAlignment="Center"/>
+                    
+                    <Button Content="Регистрация"
+                            Background="Transparent"
+                            FontSize="12"
+                            Foreground="Blue"
+                            Command="{Binding ShowRegisterCommand}"
+                            HorizontalAlignment="Center"/>
+
+                </StackPanel>
+
+                <!-- Register -->
+                <StackPanel IsVisible="{Binding IsRegisterMode}"
+                            Spacing="10">
+                    
+                    <TextBlock Text="Регистрация" 
+                               HorizontalAlignment="Center" 
+                               FontSize="28" 
+                               FontWeight="Bold"/>
+
+                    <TextBox Watermark="Email"
+                             Text="{Binding RegisterEmail}"/>
+
+                    <TextBox Watermark="Телефон(Не обязательное поле)"
+                             Text="{Binding PhoneNumber}"
+                             MaxLength="18"/>
+
+                    <TextBox Watermark="Пароль"
+                             PasswordChar="*"
+                             Text="{Binding RegisterPassword}"/>
+
+                    <TextBox Watermark="Подтвердите пароль"
+                             PasswordChar="*"
+                             Text="{Binding ConfirmPassword}"/>
+
+                    <TextBlock Text="Тип аккаунта"
+                               FontSize="16" 
+                               FontWeight="700"
+                               HorizontalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="15">
+
+                        <RadioButton Content="Покупатель"
+                                     GroupName="UserRole"
+                                     IsChecked="{Binding IsCustomer}"/>
+
+                        <RadioButton Content="Продавец"
+                                     GroupName="UserRole"
+                                     IsChecked="{Binding IsSeller}"/>
+
+                    </StackPanel>
+                    
+                    <StackPanel IsVisible="{Binding IsSeller}"
+                                Spacing="15">
+
+                        <TextBox Watermark="Название компании"
+                                 Text="{Binding CompanyName}"/>
+
+                        <TextBox Watermark="ИНН"
+                                 Text="{Binding Inn}"
+                                 MaxLength="12"/>
+
+                        <Button Content="Проверить ИНН"
+                                Command="{Binding VerifyINNCommand}"
+                                HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Button Content="Зарегистрироваться"
+                            Command="{Binding RegisterCommand}"
+                            CommandParameter="{Binding $parent[Window]}"
+                            HorizontalAlignment="Center"/>
+                    
+                    <Button Content="Войти"
+                            Background="Transparent"
+                            FontSize="12"
+                            Foreground="Blue"
+                            Command="{Binding ShowLoginCommand}"
+                            HorizontalAlignment="Center"/>
+
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>   
+    </Grid>
+    
+</Window>
