@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace MegaMarketLink.Models;
+
+public partial class Order
+{
+    public int Id { get; set; }
+
+    public int UserId { get; set; }
+
+    public DateTime OrderDate { get; set; }
+
+    public string DeliveryAddress { get; set; } = null!;
+
+    public decimal TotalPrice { get; set; }
+
+    public int StatusId { get; set; }
+
+    public virtual OrderItem? OrderItem { get; set; }
+
+    public virtual OrderStatus Status { get; set; } = null!;
+
+    public virtual User User { get; set; } = null!;
+}
