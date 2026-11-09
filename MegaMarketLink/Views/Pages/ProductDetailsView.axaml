@@ -49,13 +49,23 @@
                     <TextBlock Text="{Binding Product.Quantity,
                                                StringFormat='В наличии: {0} шт.'}"/>
                     
-                    <Button Content="Добавить в корзину"
+                    <Button Content="{Binding AddButtonText}"
                             Command="{Binding AddProductCommand}"
                             HorizontalAlignment="Stretch"
+                            VerticalContentAlignment="Center"
                             Height="45"
-                            Background="#2563EB"
+                            Background="{Binding IsInCart}"
                             Foreground="White"
-                            FontSize="16"/>
+                            FontSize="16"
+                            Classes.inCart="{Binding IsInCart}">
+
+                        <Button.Styles>
+                            <Style Selector="Button.inCart">
+                                <Setter Property="Background" Value="#999999"/>
+                            </Style>
+                        </Button.Styles>
+
+                    </Button>
 
                 </StackPanel>
 

@@ -6,6 +6,7 @@
              x:Class="MegaMarketLink.Views.Pages.CatalogView"
              xmlns:vm="using:MegaMarketLink.ViewModels.Pages"
              xmlns:models="clr-namespace:MegaMarketLink.Models"
+             xmlns:pagevm="using:MegaMarketLink.ViewModels.Pages"
              x:DataType="vm:CatalogVM">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="25">
@@ -34,57 +35,75 @@
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate  x:DataType="models:Product"
-                                   x:CompileBindings="False">
+                    <DataTemplate x:DataType="pagevm:CatalogProductVM"
+                                  x:CompileBindings="False">
 
-                        <Button Command="{Binding $parent[ItemsControl].DataContext.OpenProductCommand}"
-                                CommandParameter="{Binding}"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Padding="0">
-                            
-                            <Border Width="200"
-                                    Margin="0 0 15 15"
-                                    Padding="15"
-                                    Background="#F1F2F6"
-                                    CornerRadius="10">
+                        <Border Width="200"
+                                Margin="0 0 15 15"
+                                Padding="15"
+                                Background="#F1F2F6"
+                                CornerRadius="10">
 
-                                <StackPanel Spacing="8">
+                            <StackPanel Spacing="8">
 
-                                    <Border Height="120"
-                                            Background="#DDE1E7"
-                                            CornerRadius="6">
-                                        <TextBlock Text="Нет изображения"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
+                                <Button Command="{Binding $parent[ItemsControl].DataContext.OpenProductCommand}"
+                                        CommandParameter="{Binding}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Padding="0">
+
+                                    <StackPanel Spacing="8">
+
+                                        <Border Height="120"
+                                                Background="#DDE1E7"
+                                                CornerRadius="6">
+
+                                            <TextBlock Text="Нет изображения"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <TextBlock Text="{Binding Product.Name}"
+                                                   FontSize="16"
+                                                   FontWeight="Bold"
+                                                   TextWrapping="Wrap"/>
+
+                                        <TextBlock Text="{Binding Product.Description}"
+                                                   Foreground="#666"
+                                                   TextWrapping="Wrap"
+                                                   MaxHeight="45"/>
+
+                                        <TextBlock Text="{Binding Product.Price, StringFormat='{}{0:N2} ₽'}"
+                                                   FontSize="18"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="{Binding Product.Quantity, StringFormat='В наличии: {0}'}"
                                                    Foreground="#666"/>
-                                    </Border>
 
-                                    <TextBlock Text="{Binding Name}"
-                                               FontSize="16"
-                                               FontWeight="Bold"
-                                               TextWrapping="Wrap"/>
+                                    </StackPanel>
 
-                                    <TextBlock Text="{Binding Description}"
-                                               Foreground="#666"
-                                               TextWrapping="Wrap"
-                                               MaxHeight="45"/>
+                                </Button>
 
-                                    <TextBlock Text="{Binding Price, StringFormat='{}{0:N2} ₽'}"
-                                               FontSize="18"
-                                               FontWeight="Bold"/>
+                                <Button Content="{Binding AddButtonText}"
+                                        Command="{Binding $parent[ItemsControl].DataContext.AddProductCommand}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Stretch"
+                                        Background="{Binding IsInCart}"
+                                        Foreground="White"
+                                        FontSize="14"
+                                        Classes.inCart="{Binding IsInCart}">
 
-                                    <TextBlock Text="{Binding Quantity, StringFormat='В наличии: {0}'}"
-                                               Foreground="#666"/>
-                                    
-                                    <Button Content="В корзину"
-                                            Command="{Binding $parent[ItemsControl].DataContext.AddProductCommand}"
-                                            CommandParameter="{Binding}"/>
+                                    <Button.Styles>
+                                        <Style Selector="Button.inCart">
+                                            <Setter Property="Background" Value="#999999"/>
+                                        </Style>
+                                    </Button.Styles>
 
-                                </StackPanel>
+                                </Button>
 
-                            </Border>
-                        </Button>
+                            </StackPanel>
+
+                        </Border>
 
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

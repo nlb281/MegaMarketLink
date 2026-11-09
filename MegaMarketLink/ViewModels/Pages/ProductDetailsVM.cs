@@ -9,6 +9,7 @@ namespace MegaMarketLink.ViewModels.Pages;
 
 public class ProductDetailsVM : ViewModelBase
 {
+    private bool isInCart;
     private readonly Action goBack;
 
     public Product Product { get; }
@@ -23,24 +24,23 @@ public class ProductDetailsVM : ViewModelBase
 
         BackCommand = ReactiveCommand.Create(this.goBack);
         AddProductCommand = ReactiveCommand.Create(AddProduct);
+        IsInCart = StaticFields.CartProducts.Any(x => x.Id == Product.Id);
     }
     
     private void AddProduct()
     {
-        if (Product.Quantity <= 0)
-            return;
-
         CartProduct? cartProduct = StaticFields.CartProducts
             .FirstOrDefault(x => x.Id == Product.Id);
 
         if (cartProduct != null)
         {
-            if (cartProduct.Quantity >= Product.Quantity)
-                return;
-
-            cartProduct.Quantity++;
+            StaticFields.CartProducts.Remove(cartProduct);
+            IsInCart = false;
             return;
         }
+
+        if (Product.Quantity <= 0)
+            return;
 
         CartProduct newCartProduct = new CartProduct
         {
@@ -51,5 +51,18 @@ public class ProductDetailsVM : ViewModelBase
         };
 
         StaticFields.CartProducts.Add(newCartProduct);
+        IsInCart = true;
     }
+    
+    public bool IsInCart
+    {
+        get => isInCart;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref isInCart, value);
+            this.RaisePropertyChanged(nameof(AddButtonText));
+        }
+    }
+    
+    public string AddButtonText => IsInCart ? "Убрать из корзины" : "Добавить в корзину";
 }

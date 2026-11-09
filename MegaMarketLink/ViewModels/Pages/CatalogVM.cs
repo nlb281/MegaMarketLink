@@ -13,11 +13,12 @@ public class CatalogVM : ViewModelBase
     private readonly Action<Product>? onProductSelected;
     
     private string searchText = "";
+    private bool isInCart;
     
-    public ObservableCollection<Product> Products { get; } = new();
+    public ObservableCollection<CatalogProductVM> Products { get; } = new();
     
-    public ReactiveCommand<Product, Unit> AddProductCommand { get; }
-    public ReactiveCommand<Product, Unit> OpenProductCommand { get; set; }
+    public ReactiveCommand<CatalogProductVM, Unit> AddProductCommand { get; }
+    public ReactiveCommand<CatalogProductVM, Unit> OpenProductCommand { get; set; }
 
     public string SearchText
     {
@@ -34,10 +35,10 @@ public class CatalogVM : ViewModelBase
         this.categoryId = categoryId;
         this.onProductSelected = onProductSelected;
 
-        AddProductCommand = ReactiveCommand.Create<Product>(AddProduct);
+        AddProductCommand = ReactiveCommand.Create<CatalogProductVM>(AddProduct);
         
-        OpenProductCommand = ReactiveCommand.Create<Product>(product =>
-            this.onProductSelected?.Invoke(product));
+        OpenProductCommand = ReactiveCommand.Create<CatalogProductVM>(product =>
+            this.onProductSelected?.Invoke(product.Product));
         
         LoadProducts();
     }
@@ -55,34 +56,33 @@ public class CatalogVM : ViewModelBase
             .ToList();
 
         foreach (var product in products)
-            Products.Add(product);
+            Products.Add(new CatalogProductVM(product));
     }
     
-    private void AddProduct(Product selectedProduct)
+    private void AddProduct(CatalogProductVM selectedProduct)
     {
-        if (selectedProduct.Quantity <= 0)
-            return;
-
         CartProduct? cartProduct = StaticFields.CartProducts
-            .FirstOrDefault(x => x.Id == selectedProduct.Id);
+            .FirstOrDefault(x => x.Id == selectedProduct.Product.Id);
 
         if (cartProduct != null)
         {
-            if (cartProduct.Quantity >= selectedProduct.Quantity)
-                return;
-
-            cartProduct.Quantity++;
+            StaticFields.CartProducts.Remove(cartProduct);
+            selectedProduct.IsInCart = false;
             return;
         }
+        
+        if (selectedProduct.Product.Quantity <= 0)
+            return;
 
         CartProduct newCartProduct = new CartProduct
         {
-            Id = selectedProduct.Id,
-            Name = selectedProduct.Name,
-            Price = selectedProduct.Price,
+            Id = selectedProduct.Product.Id,
+            Name = selectedProduct.Product.Name,
+            Price = selectedProduct.Product.Price,
             Quantity = 1
         };
 
         StaticFields.CartProducts.Add(newCartProduct);
+        selectedProduct.IsInCart = true;
     }
 }
