@@ -76,6 +76,10 @@
 
                                     <TextBlock Text="{Binding Quantity, StringFormat='В наличии: {0}'}"
                                                Foreground="#666"/>
+                                    
+                                    <Button Content="В корзину"
+                                            Command="{Binding $parent[ItemsControl].DataContext.AddProductCommand}"
+                                            CommandParameter="{Binding}"/>
 
                                 </StackPanel>
 

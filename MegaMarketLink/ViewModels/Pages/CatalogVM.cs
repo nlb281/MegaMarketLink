@@ -15,6 +15,8 @@ public class CatalogVM : ViewModelBase
     private string searchText = "";
     
     public ObservableCollection<Product> Products { get; } = new();
+    
+    public ReactiveCommand<Product, Unit> AddProductCommand { get; }
     public ReactiveCommand<Product, Unit> OpenProductCommand { get; set; }
 
     public string SearchText
@@ -32,6 +34,8 @@ public class CatalogVM : ViewModelBase
         this.categoryId = categoryId;
         this.onProductSelected = onProductSelected;
 
+        AddProductCommand = ReactiveCommand.Create<Product>(AddProduct);
+        
         OpenProductCommand = ReactiveCommand.Create<Product>(product =>
             this.onProductSelected?.Invoke(product));
         
@@ -52,5 +56,33 @@ public class CatalogVM : ViewModelBase
 
         foreach (var product in products)
             Products.Add(product);
+    }
+    
+    private void AddProduct(Product selectedProduct)
+    {
+        if (selectedProduct.Quantity <= 0)
+            return;
+
+        CartProduct? cartProduct = StaticFields.CartProducts
+            .FirstOrDefault(x => x.Id == selectedProduct.Id);
+
+        if (cartProduct != null)
+        {
+            if (cartProduct.Quantity >= selectedProduct.Quantity)
+                return;
+
+            cartProduct.Quantity++;
+            return;
+        }
+
+        CartProduct newCartProduct = new CartProduct
+        {
+            Id = selectedProduct.Id,
+            Name = selectedProduct.Name,
+            Price = selectedProduct.Price,
+            Quantity = 1
+        };
+
+        StaticFields.CartProducts.Add(newCartProduct);
     }
 }
