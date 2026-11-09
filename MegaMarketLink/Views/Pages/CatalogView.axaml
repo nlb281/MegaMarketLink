@@ -44,13 +44,16 @@
                                 Background="#F1F2F6"
                                 CornerRadius="10">
 
-                            <StackPanel Spacing="8">
+                            <StackPanel Spacing="8"
+                                        HorizontalAlignment="Stretch">
 
                                 <Button Command="{Binding $parent[ItemsControl].DataContext.OpenProductCommand}"
                                         CommandParameter="{Binding}"
                                         Background="Transparent"
                                         BorderThickness="0"
-                                        Padding="0">
+                                        Padding="0"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch">
 
                                     <StackPanel Spacing="8">
 
@@ -88,6 +91,7 @@
                                         Command="{Binding $parent[ItemsControl].DataContext.AddProductCommand}"
                                         CommandParameter="{Binding}"
                                         HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
                                         Background="{Binding IsInCart}"
                                         Foreground="White"
                                         FontSize="14"
