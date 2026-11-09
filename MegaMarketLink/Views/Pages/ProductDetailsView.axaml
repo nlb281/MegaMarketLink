@@ -1,0 +1,58 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MegaMarketLink.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MegaMarketLink.Views.Pages.ProductDetailsView"
+             x:DataType="vm:ProductDetailsVM">
+    <ScrollViewer>
+        <StackPanel Margin="25" Spacing="20">
+
+            <Button Content="← Назад в каталог"
+                    Command="{Binding BackCommand}"
+                    HorizontalAlignment="Left"/>
+
+            <Border Background="#F1F2F6"
+                    CornerRadius="10"
+                    Padding="20">
+
+                <StackPanel Spacing="15">
+
+                    <Border Height="250"
+                            Background="#DDE1E7"
+                            CornerRadius="8">
+
+                        <TextBlock Text="Нет изображения"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#666666"/>
+
+                    </Border>
+
+                    <TextBlock Text="{Binding Product.Name}"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               TextWrapping="Wrap"/>
+
+                    <TextBlock Text="{Binding Product.Description}"
+                               FontSize="16"
+                               TextWrapping="Wrap"/>
+
+                    <TextBlock Text="{Binding Product.Price, StringFormat='{}{0:N2} ₽'}"
+                               FontSize="26"
+                               FontWeight="Bold"/>
+
+                    <TextBlock Text="{Binding Product.Category.Name,
+                                               StringFormat='Категория: {0}'}"/>
+
+                    <TextBlock Text="{Binding Product.Quantity,
+                                               StringFormat='В наличии: {0} шт.'}"/>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

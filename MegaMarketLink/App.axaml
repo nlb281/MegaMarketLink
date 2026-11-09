@@ -36,6 +36,10 @@
         <DataTemplate DataType="{x:Type vm:SellerVM}">
             <pages:SellerView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vm:ProductDetailsVM}">
+            <pages:ProductDetailsView/>
+        </DataTemplate>
 
     </Application.DataTemplates>
 </Application>

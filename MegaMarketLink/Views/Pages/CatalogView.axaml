@@ -5,6 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MegaMarketLink.Views.Pages.CatalogView"
              xmlns:vm="using:MegaMarketLink.ViewModels.Pages"
+             xmlns:models="clr-namespace:MegaMarketLink.Models"
              x:DataType="vm:CatalogVM">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="25">
@@ -33,45 +34,53 @@
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate  x:DataType="models:Product"
+                                   x:CompileBindings="False">
 
-                        <Border Width="200"
-                                Margin="0 0 15 15"
-                                Padding="15"
-                                Background="#F1F2F6"
-                                CornerRadius="10">
+                        <Button Command="{Binding $parent[ItemsControl].DataContext.OpenProductCommand}"
+                                CommandParameter="{Binding}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="0">
+                            
+                            <Border Width="200"
+                                    Margin="0 0 15 15"
+                                    Padding="15"
+                                    Background="#F1F2F6"
+                                    CornerRadius="10">
 
-                            <StackPanel Spacing="8">
+                                <StackPanel Spacing="8">
 
-                                <Border Height="120"
-                                        Background="#DDE1E7"
-                                        CornerRadius="6">
-                                    <TextBlock Text="Нет изображения"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
+                                    <Border Height="120"
+                                            Background="#DDE1E7"
+                                            CornerRadius="6">
+                                        <TextBlock Text="Нет изображения"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#666"/>
+                                    </Border>
+
+                                    <TextBlock Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               TextWrapping="Wrap"/>
+
+                                    <TextBlock Text="{Binding Description}"
+                                               Foreground="#666"
+                                               TextWrapping="Wrap"
+                                               MaxHeight="45"/>
+
+                                    <TextBlock Text="{Binding Price, StringFormat='{}{0:N2} ₽'}"
+                                               FontSize="18"
+                                               FontWeight="Bold"/>
+
+                                    <TextBlock Text="{Binding Quantity, StringFormat='В наличии: {0}'}"
                                                Foreground="#666"/>
-                                </Border>
 
-                                <TextBlock Text="{Binding Name}"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           TextWrapping="Wrap"/>
+                                </StackPanel>
 
-                                <TextBlock Text="{Binding Description}"
-                                           Foreground="#666"
-                                           TextWrapping="Wrap"
-                                           MaxHeight="45"/>
-
-                                <TextBlock Text="{Binding Price, StringFormat='{}{0:N2} ₽'}"
-                                           FontSize="18"
-                                           FontWeight="Bold"/>
-
-                                <TextBlock Text="{Binding Quantity, StringFormat='В наличии: {0}'}"
-                                           Foreground="#666"/>
-
-                            </StackPanel>
-
-                        </Border>
+                            </Border>
+                        </Button>
 
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

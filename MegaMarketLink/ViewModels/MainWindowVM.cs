@@ -67,7 +67,12 @@ public class MainWindowVM : ViewModelBase
 
     private void ShowCatalog()
     {
-        CurrentView = new CatalogVM(SelectedCategory?.Id);
+        CurrentView = new CatalogVM(SelectedCategory?.Id, ShowProductDetails);
+    }
+    
+    private void ShowProductDetails(Product product)
+    {
+        CurrentView = new ProductDetailsVM(product, ShowCatalog);
     }
 
     private void ShowCart()
