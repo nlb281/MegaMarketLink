@@ -36,6 +36,8 @@ public class CartVM : ViewModelBase
 
         cartProduct.Quantity++;
         this.RaisePropertyChanged(nameof(TotalPrice));
+        
+        StaticFields.SyncCart();
     }
 
     private void RemoveProduct(CartProduct cartProduct)
@@ -45,11 +47,14 @@ public class CartVM : ViewModelBase
 
         cartProduct.Quantity--;
         this.RaisePropertyChanged(nameof(TotalPrice));
+        
+        StaticFields.SyncCart();
     }
 
     private void DeleteProduct(CartProduct cartProduct)
     {
         CartProducts.Remove(cartProduct);
+        StaticFields.SyncCart();
         this.RaisePropertyChanged(nameof(TotalPrice));
         this.RaisePropertyChanged(nameof(IsEmpty));
     }

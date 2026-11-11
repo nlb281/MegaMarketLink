@@ -68,6 +68,7 @@ public class CatalogVM : ViewModelBase
         {
             StaticFields.CartProducts.Remove(cartProduct);
             selectedProduct.IsInCart = false;
+            StaticFields.SyncCart();
             return;
         }
         
@@ -83,6 +84,7 @@ public class CatalogVM : ViewModelBase
         };
 
         StaticFields.CartProducts.Add(newCartProduct);
+        StaticFields.SyncCart();
         selectedProduct.IsInCart = true;
     }
 }

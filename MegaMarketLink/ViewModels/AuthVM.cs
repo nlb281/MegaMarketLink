@@ -85,6 +85,8 @@ public class AuthVM : ViewModelBase
             return;
         }
         
+        await StaticFields.LoadCart();
+        
         var MainWindow = new MainWindow()
         {
             DataContext = new MainWindowVM()
