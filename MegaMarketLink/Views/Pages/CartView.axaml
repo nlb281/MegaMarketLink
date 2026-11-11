@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MegaMarketLink.Views.Pages.CartView"
              x:DataType="vm:CartVM">
-    <Grid RowDefinitions="Auto,*,Auto"
+    <Grid RowDefinitions="Auto,*,Auto, Auto"
           Margin="25">
         
         <TextBlock Grid.Row="0"
@@ -119,6 +119,27 @@
             </Grid>
 
         </Border>
+        
+        <StackPanel Grid.Row="3" Spacing="10" Margin="15">
+
+            <TextBlock Text="Адрес доставки"
+                       FontWeight="Bold"/>
+
+            <TextBox Text="{Binding DeliveryAddress}"
+                     Watermark="Введите адрес доставки"/>
+
+            <TextBlock Text="{Binding Message}"
+                       TextWrapping="Wrap"/>
+
+            <TextBlock Text="{Binding TotalPrice, StringFormat='Общая стоимость: {0:N2} ₽'}"
+                       FontSize="18"
+                       FontWeight="Bold"/>
+
+            <Button Content="Оформить заказ"
+                    Command="{Binding CreateOrderCommand}"
+                    HorizontalAlignment="Stretch"/>
+
+        </StackPanel>
 
     </Grid>
 </UserControl>

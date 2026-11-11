@@ -17,6 +17,7 @@ public partial class MegaMarketLinkContext : DbContext
 
     public virtual DbSet<Cart> Carts { get; set; }
 
+
     public virtual DbSet<CartItem> CartItems { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -137,7 +138,7 @@ public partial class MegaMarketLinkContext : DbContext
 
             entity.ToTable("order_items");
 
-            entity.HasIndex(e => e.OrderId, "order_items_unique").IsUnique();
+            // entity.HasIndex(e => e.OrderId, "order_items_unique").IsUnique();
 
             entity.Property(e => e.Id)
                 .UseIdentityAlwaysColumn()
@@ -149,8 +150,8 @@ public partial class MegaMarketLinkContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
-            entity.HasOne(d => d.Order).WithOne(p => p.OrderItem)
-                .HasForeignKey<OrderItem>(d => d.OrderId)
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
+                .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("order_items_orders_fk");
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderItems)

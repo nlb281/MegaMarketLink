@@ -17,7 +17,7 @@ public partial class Order
 
     public int StatusId { get; set; }
 
-    public virtual OrderItem? OrderItem { get; set; }
+    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     public virtual OrderStatus Status { get; set; } = null!;
 
