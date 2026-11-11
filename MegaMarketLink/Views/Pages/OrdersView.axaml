@@ -2,14 +2,102 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MegaMarketLink.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MegaMarketLink.Views.Pages.OrdersView">
-    <StackPanel Margin="25" Spacing="15">
-        <TextBlock Text="Заказы"
-                   FontSize="28"
-                   FontWeight="Bold"/>
+             x:Class="MegaMarketLink.Views.Pages.OrdersView"
+             x:DataType="vm:OrdersVM">
+    
+    <Grid RowDefinitions="Auto,*" Margin="25">
 
-        <TextBlock Text="Здесь будут отображаться заказы."
-                   FontSize="16"/>
-    </StackPanel>
+        <TextBlock Grid.Row="0"
+                   Text="Заказы"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+
+            <TextBlock Text="У вас пока нет заказов."
+                       FontSize="16"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       IsVisible="{Binding IsEmpty}"/>
+
+            <TextBlock Text="{Binding Message}"
+                       Foreground="Red"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"/>
+
+            <ScrollViewer IsVisible="{Binding !IsEmpty}">
+                <ItemsControl ItemsSource="{Binding Orders}">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+
+                            <Border BorderThickness="1"
+                                    BorderBrush="#DDDDDD"
+                                    CornerRadius="8"
+                                    Padding="15"
+                                    Margin="0,0,0,15">
+
+                                <StackPanel Spacing="10">
+
+                                    <Grid ColumnDefinitions="*,Auto">
+
+                                        <TextBlock Text="{Binding Id, StringFormat='Заказ №{0}'}"
+                                                   FontSize="18"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Status.Name}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"/>
+
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding OrderDate, StringFormat='Дата: {0:dd.MM.yyyy HH:mm}'}"/>
+
+                                    <TextBlock Text="{Binding DeliveryAddress, StringFormat='Адрес доставки: {0}'}"
+                                               TextWrapping="Wrap"/>
+
+                                    <TextBlock Text="Товары:"
+                                               FontWeight="Bold"/>
+
+                                    <ItemsControl ItemsSource="{Binding OrderItems}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid ColumnDefinitions="*,Auto"
+                                                      Margin="0,3">
+
+                                                    <TextBlock Text="{Binding Product.Name}"
+                                                               TextWrapping="Wrap"/>
+
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding Quantity, StringFormat='x{0}'}"/>
+
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <Separator/>
+
+                                    <TextBlock Text="{Binding TotalPrice, StringFormat='Итого: {0:N2} ₽'}"
+                                               FontSize="17"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Right"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </ScrollViewer>
+
+        </Grid>
+
+    </Grid>
 </UserControl>
