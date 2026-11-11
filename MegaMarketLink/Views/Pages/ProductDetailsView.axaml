@@ -38,6 +38,9 @@
                     <TextBlock Text="{Binding Product.Description}"
                                FontSize="16"
                                TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding Product.Seller.CompanyName, StringFormat='Продавец: {0}'}"
+                               FontSize="16"
+                               TextWrapping="Wrap"/>
 
                     <TextBlock Text="{Binding Product.Price, StringFormat='{}{0:N2} ₽'}"
                                FontSize="26"

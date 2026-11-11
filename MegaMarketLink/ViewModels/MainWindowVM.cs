@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive;
 using MegaMarketLink.Models;
 using MegaMarketLink.ViewModels.Pages;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 
 namespace MegaMarketLink.ViewModels;
@@ -72,6 +73,11 @@ public class MainWindowVM : ViewModelBase
     
     private void ShowProductDetails(Product product)
     {
+        var loadedProduct = StaticFields.context.Products.Include(p => p.Seller).FirstOrDefault(p => p.Id == product.Id);
+
+        if (loadedProduct == null)
+            return;
+        
         CurrentView = new ProductDetailsVM(product, ShowCatalog);
     }
 

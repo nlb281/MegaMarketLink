@@ -17,6 +17,7 @@ public class ProductDetailsVM : ViewModelBase
     public ReactiveCommand<Unit, Unit> BackCommand { get; }
     public ReactiveCommand<Unit, Unit> AddProductCommand { get; }
 
+
     public ProductDetailsVM(Product product, Action goBack)
     {
         Product = product;
