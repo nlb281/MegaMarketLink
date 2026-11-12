@@ -2,14 +2,160 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MegaMarketLink.ViewModels.Pages"
+             xmlns:models="clr-namespace:MegaMarketLink.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MegaMarketLink.Views.Pages.SellerView">
-    <StackPanel Margin="25" Spacing="15">
-        <TextBlock Text="Для продавца"
-                   FontSize="28"
-                   FontWeight="Bold"/>
+             x:Name="SellerRoot"
+             x:Class="MegaMarketLink.Views.Pages.SellerView"
+             x:DataType="vm:SellerVM">
+    <ScrollViewer>
+        <StackPanel Margin="30" Spacing="20">
 
-        <TextBlock Text="Здесь будут отображаться Для продавца"
-                   FontSize="16"/>
-    </StackPanel>
+            <TextBlock Text="Кабинет продавца"
+                       FontSize="28"
+                       FontWeight="Bold"/>
+
+            <TextBlock Text="Добавление нового товара"
+                       FontSize="20"
+                       FontWeight="SemiBold"/>
+            
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto,Auto,Auto"
+                  ColumnSpacing="24"
+                  RowSpacing="14">
+
+                <StackPanel Grid.Row="0" Grid.Column="0" Spacing="6">
+                    <TextBlock Text="Название товара"/>
+                    <TextBox Text="{Binding Name}"
+                             Watermark="Введите название"
+                             HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Spacing="6">
+                    <TextBlock Text="Категория"/>
+                    <ComboBox ItemsSource="{Binding Categories}"
+                              SelectedItem="{Binding SelectedCategory}"
+                              PlaceholderText="Выберите категорию"
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:Category">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="0" Spacing="6">
+                    <TextBlock Text="Цена"/>
+                    <TextBox Text="{Binding PriceText}"
+                             Watermark="Например, 1500"
+                             HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="1" Spacing="6">
+                    <TextBlock Text="Количество"/>
+                    <TextBox Text="{Binding QuantityText}"
+                             Watermark="Количество на складе"
+                             HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Spacing="6">
+                    <TextBlock Text="Описание"/>
+                    <TextBox Text="{Binding Description}"
+                             Watermark="Описание товара"
+                             AcceptsReturn="True"
+                             MinHeight="100"
+                             TextWrapping="Wrap"
+                             HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            Spacing="6">
+                    <TextBlock Text="Ссылка на изображение"/>
+                    <TextBox Text="{Binding ImageUrl}"
+                             Watermark="https://example.com/image.jpg"
+                             HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="{Binding SubmitButtonText}"
+                        Command="{Binding AddProductCommand}"/>
+
+                <Button Content="Отмена"
+                        Command="{Binding CancelEditCommand}"
+                        IsVisible="{Binding IsEditing}"/>
+            </StackPanel>
+
+            <Separator Margin="0,5"/>
+
+            <TextBlock Text="Мои товары"
+                       FontSize="22"
+                       FontWeight="SemiBold"/>
+            
+            <ItemsControl ItemsSource="{Binding Products}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <Border BorderBrush="Gray"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="16"
+                                Margin="0,0,0,12">
+
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="16">
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="{Binding Name}"
+                                               FontSize="18"
+                                               FontWeight="Bold"/>
+
+                                    <TextBlock Text="{Binding IsActive, StringFormat='Активность: {0}'}"
+                                               Foreground="Gray"/>
+                                    
+                                    <TextBlock Text="{Binding Category.Name}"
+                                               Foreground="Gray"/>
+
+                                    <TextBlock Text="{Binding Description}"
+                                               TextWrapping="Wrap"/>
+
+                                    <TextBlock Text="{Binding Price, StringFormat='Цена: {0} ₽'}"/>
+
+                                    <TextBlock Text="{Binding Quantity, StringFormat='В наличии: {0} шт.'}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+
+                                    <Button Content="Изменить"
+                                            x:CompileBindings="False"
+                                            Command="{Binding #SellerRoot.DataContext.EditProductCommand}"
+                                            CommandParameter="{Binding}"/>
+
+                                    <Button Content="Снять с продажи"
+                                            x:CompileBindings="False"
+                                            IsVisible="{Binding IsActive}"
+                                            Command="{Binding #SellerRoot.DataContext.DeleteProductCommand}"
+                                            CommandParameter="{Binding}"/>
+
+                                    <Button Content="Восстановить"
+                                            x:CompileBindings="False"
+                                            IsVisible="{Binding !IsActive}"
+                                            Command="{Binding #SellerRoot.DataContext.RestoreProductCommand}"
+                                            CommandParameter="{Binding}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
