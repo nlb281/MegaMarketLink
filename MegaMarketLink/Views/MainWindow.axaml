@@ -59,7 +59,10 @@
                      <Button Content="Мой магазин"
                              Command="{Binding ShowSellerCommand}"
                              IsVisible="{Binding IsSeller}"/>
-
+                     
+                     <Button Content="Админ-панель"
+                             Command="{Binding ShowAdminCommand}"
+                             IsVisible="{Binding IsAdmin}"/>
                  </StackPanel>
 
              </Grid>

@@ -18,9 +18,12 @@ public class MainWindowVM : ViewModelBase
     public ReactiveCommand<Unit, Unit> ShowCartCommand { get; }
     public ReactiveCommand<Unit, Unit> ShowOrdersCommand { get; }
     public ReactiveCommand<Unit, Unit> ShowSellerCommand { get; }
+    public ReactiveCommand<Unit, Unit> ShowAdminCommand { get; }
 
     public MainWindowVM()
     {
+        StaticFields.CategoriesChanged += LoadCategories;
+        
         ShowCatalogCommand = ReactiveCommand.Create(() =>
         {
             SelectedCategory = null;
@@ -30,6 +33,7 @@ public class MainWindowVM : ViewModelBase
         ShowCartCommand = ReactiveCommand.Create(ShowCart);
         ShowOrdersCommand = ReactiveCommand.Create(ShowOrders);
         ShowSellerCommand = ReactiveCommand.Create(ShowSeller);
+        ShowAdminCommand = ReactiveCommand.Create(ShowAdmin);
 
         LoadCategories();
         ShowCatalog();
@@ -46,6 +50,15 @@ public class MainWindowVM : ViewModelBase
 
         foreach (var category in categories)
             Categories.Add(category);
+        
+        if (SelectedCategory != null && !Categories.Any(x => x.Id == SelectedCategory.Id))
+        {
+            SelectedCategory = null;
+        }
+        else
+        {
+            ShowCatalog();
+        }
     }
     
     public object? CurrentView
@@ -96,4 +109,12 @@ public class MainWindowVM : ViewModelBase
         if (IsSeller)
             CurrentView = new SellerVM();
     }
+    
+    private void ShowAdmin()
+    {
+        if (IsAdmin)
+            CurrentView = new AdminVM();
+    }
+    
+    public bool IsAdmin => StaticFields.user?.Role?.Name == "admin";
 }

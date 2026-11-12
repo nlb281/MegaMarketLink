@@ -50,6 +50,7 @@ public class CatalogVM : ViewModelBase
         var products = StaticFields.context.Products
             .Where(x => x.IsActive
                         && x.Quantity > 0
+                        && x.Category.IsActive
                         && (!categoryId.HasValue || x.CategoryId == categoryId.Value)
                         && x.Name.ToLower().Contains(searchText.ToLower()))
             .OrderBy(x => x.Name)

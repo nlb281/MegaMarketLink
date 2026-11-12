@@ -1,0 +1,226 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MegaMarketLink.ViewModels.Pages"
+             xmlns:models="clr-namespace:MegaMarketLink.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MegaMarketLink.Views.Pages.AdminView"
+             x:DataType="vm:AdminVM"
+             x:Name="AdminRoot">
+    
+    <Grid RowDefinitions="Auto,*" RowSpacing="20">
+
+        <TextBlock Grid.Row="0"
+                   Text="Панель администратора"
+                   FontSize="26"
+                   FontWeight="Bold"/>
+
+        <TabControl Grid.Row="1">
+
+            <TabItem Header="Пользователи">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Users}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:User">
+                                <Border Background="#F5F6FA"
+                                        CornerRadius="8"
+                                        Padding="15"
+                                        Margin="0 5">
+
+                                    <Grid ColumnDefinitions="*,Auto"
+                                          ColumnSpacing="15">
+
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="{Binding Email}"
+                                                       FontWeight="Bold"
+                                                       FontSize="15"/>
+
+                                            <TextBlock Text="{Binding FirstName}"/>
+                                            <TextBlock Text="{Binding CompanyName}"/>
+                                            <TextBlock Text="{Binding Role.Name}"
+                                                       Foreground="Gray"/>
+
+                                            <TextBlock Text="Статус: Активен"
+                                                       Foreground="Green"
+                                                       IsVisible="{Binding !IsBanned}"/>
+
+                                            <TextBlock Text="Статус: Заблокирован"
+                                                       Foreground="Red"
+                                                       IsVisible="{Binding IsBanned}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="5">
+
+                                            <Button Content="Заблокировать"
+                                                    x:CompileBindings="False"
+                                                    IsVisible="{Binding !IsBanned}"
+                                                    Command="{Binding #AdminRoot.DataContext.BanUserCommand}"
+                                                    CommandParameter="{Binding}"/>
+
+                                            <Button Content="Разблокировать"
+                                                    x:CompileBindings="False"
+                                                    IsVisible="{Binding IsBanned}"
+                                                    Command="{Binding #AdminRoot.DataContext.UnbanUserCommand}"
+                                                    CommandParameter="{Binding}"/>
+
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+            
+            <TabItem Header="Товары">
+
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Products}">
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:Product">
+
+                                <Border Background="#F5F6FA"
+                                        CornerRadius="8"
+                                        Padding="15"
+                                        Margin="0 5">
+
+                                    <Grid ColumnDefinitions="*,Auto"
+                                          ColumnSpacing="15">
+
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontWeight="Bold"
+                                                       FontSize="15"/>
+
+                                            <TextBlock Text="{Binding Category.Name}"
+                                                       Foreground="Gray"/>
+
+                                            <TextBlock Text="{Binding Seller.Email,
+                                                StringFormat='Продавец: {0}'}"/>
+
+                                            <TextBlock Text="{Binding Price,
+                                                StringFormat='Цена: {0}'}"/>
+
+                                            <TextBlock Text="Снят с продажи"
+                                                       Foreground="Red"
+                                                       IsVisible="{Binding !IsActive}"/>
+                                        </StackPanel>
+
+                                        <Button Grid.Column="1"
+                                                x:CompileBindings="False"
+                                                Content="{Binding PublishButtonText}"
+                                                Command="{Binding #AdminRoot.DataContext.ToggleProductCommand}"
+                                                CommandParameter="{Binding}"
+                                                VerticalAlignment="Center"/>
+
+                                    </Grid>
+                                </Border>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </TabItem>
+
+            <TabItem Header="Категории">
+                <Grid RowDefinitions="Auto,*"
+                      RowSpacing="15">
+
+                    <Border Grid.Row="0"
+                            Background="#F5F6FA"
+                            CornerRadius="8"
+                            Padding="15"
+                            IsVisible="{Binding IsEditingCategory}">
+
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Редактирование категории"
+                                       FontSize="17"
+                                       FontWeight="Bold"/>
+
+                            <TextBox Watermark="Название категории"
+                                     Text="{Binding CategoryName}"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="10">
+
+                                <Button Content="Сохранить"
+                                        Command="{Binding SaveCategoryCommand}"/>
+
+                                <Button Content="Отмена"
+                                        Command="{Binding CancelCategoryEditCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <ScrollViewer Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding Categories}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:Category">
+
+                                    <Border Background="#F5F6FA"
+                                            CornerRadius="8"
+                                            Padding="15"
+                                            Margin="0 5">
+
+                                        <Grid ColumnDefinitions="*,Auto"
+                                              ColumnSpacing="10">
+
+                                            <StackPanel VerticalAlignment="Center"
+                                                        Spacing="5">
+
+                                                <TextBlock Text="{Binding Name}"
+                                                           FontWeight="Bold"
+                                                           FontSize="15"/>
+
+                                                <TextBlock Text="Активна"
+                                                           Foreground="Green"
+                                                           IsVisible="{Binding IsActive}"/>
+
+                                                <TextBlock Text="Отключена"
+                                                           Foreground="Red"
+                                                           IsVisible="{Binding !IsActive}"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="5">
+
+                                                <Button Content="Изменить"
+                                                        x:CompileBindings="False"
+                                                        Command="{Binding #AdminRoot.DataContext.EditCategoryCommand}"
+                                                        CommandParameter="{Binding}"/>
+
+                                                <Button Content="Отключить"
+                                                        x:CompileBindings="False"
+                                                        IsVisible="{Binding IsActive}"
+                                                        Command="{Binding #AdminRoot.DataContext.ToggleCategoryCommand}"
+                                                        CommandParameter="{Binding}"/>
+
+                                                <Button Content="Восстановить"
+                                                        x:CompileBindings="False"
+                                                        IsVisible="{Binding !IsActive}"
+                                                        Command="{Binding #AdminRoot.DataContext.ToggleCategoryCommand}"
+                                                        CommandParameter="{Binding}"/>
+
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+
+        </TabControl>
+
+    </Grid>
+</UserControl>

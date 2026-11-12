@@ -12,6 +12,13 @@ public class StaticFields
     public static User? user;
     public static ObservableCollection<CartProduct> CartProducts { get; } = new();
     
+    public static event Action? CategoriesChanged;
+
+    public static void NotifyCategoriesChanged()
+    {
+        CategoriesChanged?.Invoke();
+    }
+    
     public static async Task LoadCart()
     {
         if (user == null)

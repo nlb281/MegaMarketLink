@@ -37,6 +37,10 @@
             <pages:SellerView/>
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type vm:AdminVM}">
+            <pages:AdminView/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vm:ProductDetailsVM}">
             <pages:ProductDetailsView/>
         </DataTemplate>

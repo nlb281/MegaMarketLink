@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MegaMarketLink.Models;
 
@@ -32,4 +33,8 @@ public partial class Product
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     public virtual User Seller { get; set; } = null!;
+    
+    [NotMapped]
+    public string PublishButtonText =>
+        IsActive ? "Снять с публикации" : "Опубликовать";
 }
