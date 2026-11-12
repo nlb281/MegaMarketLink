@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaMarketLink", "MegaMarketLink\MegaMarketLink.csproj", "{B3E56014-7190-43C6-BB8E-0B4A183D75BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaMarketLink.Tests", "MegaMarketLink.Tests\MegaMarketLink.Tests.csproj", "{8A2E10D8-3E49-42A8-BF7C-C3F5A771C506}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B3E56014-7190-43C6-BB8E-0B4A183D75BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E56014-7190-43C6-BB8E-0B4A183D75BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E56014-7190-43C6-BB8E-0B4A183D75BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2E10D8-3E49-42A8-BF7C-C3F5A771C506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2E10D8-3E49-42A8-BF7C-C3F5A771C506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A2E10D8-3E49-42A8-BF7C-C3F5A771C506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2E10D8-3E49-42A8-BF7C-C3F5A771C506}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

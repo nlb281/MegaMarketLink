@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Reactive;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using MegaMarketLink.Helpers;
 using MegaMarketLink.Models;
 using MegaMarketLink.Views;
 using Microsoft.EntityFrameworkCore;
@@ -104,7 +103,7 @@ public class AuthVM : ViewModelBase
             return;
         }
 
-        if (!IsValidEmail(RegisterEmail))
+        if (!Validation.IsValidEmail(RegisterEmail))
         {
             MessageBoxManager.GetMessageBoxStandard("Ошибка", "Введите корректный email.").ShowWindowAsync();
             return;
@@ -112,16 +111,14 @@ public class AuthVM : ViewModelBase
         
         if (!string.IsNullOrWhiteSpace(PhoneNumber))
         {
-            string phone = new string(PhoneNumber.Where(char.IsDigit).ToArray());
-
-            if (phone.Length != 11)
+            if (!Validation.IsValidPhone(PhoneNumber))
             { 
                 MessageBoxManager.GetMessageBoxStandard("Ошибка", "Введите корректный номер телефона.").ShowWindowAsync();
                 return;
             }
         }
         
-        if (RegisterPassword.Length < 8)
+        if (!Validation.IsValidPassword(RegisterPassword))
         {
             MessageBoxManager.GetMessageBoxStandard("Ошибка", "Пароль должен содержать минимум 8 символов.").ShowWindowAsync();
             return;
@@ -141,7 +138,7 @@ public class AuthVM : ViewModelBase
                 return;
             }
 
-            if (!IsValidINN(Inn))
+            if (!Validation.IsValidInn(Inn))
             {
                 MessageBoxManager.GetMessageBoxStandard("Ошибка", "Некорректный ИНН.").ShowWindowAsync();
                 return;
@@ -206,51 +203,13 @@ public class AuthVM : ViewModelBase
     // supplementary methods
     private void verifyINN()
     {
-        if (!IsValidINN(Inn))
+        if (!Validation.IsValidInn(Inn))
         {
             MessageBoxManager.GetMessageBoxStandard("Проверка ИНН", "ИНН не прошёл проверку контрольных цифр.").ShowWindowAsync();
             return;
         }
 
         MessageBoxManager.GetMessageBoxStandard("Проверка ИНН", "Цифры ИНН корректны.").ShowWindowAsync();
-    }
-
-    private bool IsValidEmail(string email)
-    {
-        try
-        {
-            return new System.Net.Mail.MailAddress(email).Address == email;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private bool IsValidINN(string inn)
-    {
-        if (!Regex.IsMatch(inn, @"^\d{10}$|^\d{12}$"))
-            return false;
-
-        int[] weights10 = { 2, 4, 10, 3, 5, 9, 4, 6, 8 };
-        int[] weights12First = { 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
-        int[] weights12Second = { 3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
-
-        int checkDigit(string value, int[] weights)
-        {
-            int sum = 0;
-
-            for (int i = 0; i < weights.Length; i++)
-                sum += (value[i] - '0') * weights[i];
-
-            return (sum % 11) % 10;
-        }
-
-        if (inn.Length == 10)
-            return checkDigit(inn, weights10) == inn[9] - '0';
-
-        return checkDigit(inn, weights12First) == inn[10] - '0'
-            && checkDigit(inn, weights12Second) == inn[11] - '0';
     }
 
     public string LoginEmail
